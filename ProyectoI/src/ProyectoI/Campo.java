@@ -90,7 +90,7 @@ public class Campo extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void continuarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_continuarActionPerformed
-        //tablero.algoritmoMovimiento();
+        tablero.continuar();
     }//GEN-LAST:event_continuarActionPerformed
 
     /**
