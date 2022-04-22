@@ -27,21 +27,16 @@ public class abejaRecolectora extends abeja {
 
     public void algoritmoMovimiento() {//Algoritmo de movimiento
         if (isPolen()) {
-            System.out.println("move2Colmena");
             toColmena();
         } else if (getAmenazaXY() != "") {
             if (getTipo() == "Defensora") {
-                System.out.println("moveToAmenaza");
                 moveTo(getAmenazaXY());
             } else {
-                System.out.println("moveAwayAmenaza");
                 moveAway(getAmenazaXY());
             }
         } else if (getRecursoXY() != "") {
-            System.out.println("moveToRecurso");
             moveTo(getRecursoXY());
         } else {
-            System.out.println("moverAleatorio");
             moverAleatorio();
         }
     }

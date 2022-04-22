@@ -31,12 +31,10 @@ public class serVivo {
     }
 
     public void recibirAtaque() {
-        System.out.println("Vida: " + getVida());
         this.vida--;
         if (vida <= 0) {
             this.morir();
         }
-        System.out.println("Vida: " + getVida());
     }
 
     public void morir() {

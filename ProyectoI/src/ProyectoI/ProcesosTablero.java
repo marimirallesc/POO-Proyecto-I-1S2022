@@ -62,12 +62,12 @@ public class ProcesosTablero {
         int num = size - 2;
         for (int i = 0; i < cant; i++) {
             do {
-                x = random(0, num);
-                y = random(0, num);
-                var00 = x + "," + y;
-                var01 = x + "," + (y + 1);
-                var10 = (x + 1) + "," + y;
-                var11 = (x + 1) + "," + (y + 1);
+                ejeX = random(0, num);
+                ejeY = random(0, num);
+                var00 = ejeX + "," + ejeY;
+                var01 = ejeX + "," + (ejeY + 1);
+                var10 = (ejeX + 1) + "," + ejeY;
+                var11 = (ejeX + 1) + "," + (ejeY + 1);
             } while (todo.contains(var00) || todo.contains(var01)
                     || todo.contains(var10) || todo.contains(var11));
             //Las posiciones deben ser únicas
@@ -75,15 +75,15 @@ public class ProcesosTablero {
                 case 1: //Posiciones abejas defensoras
                     abejasDefensoras.add(var00);
                     todo.add(var00);
-                    defensoraAL.add(new abejaDefensora(10, x, y, true, var00, 
-                            false, false, "Defensora", "", "", 0, var01, var10, 
+                    defensoraAL.add(new abejaDefensora(10, ejeX, ejeY, true, var00,
+                            false, false, "Defensora", "", "", 0, var01, var10,
                             var11, this));
                     break;
                 case 2: //Posiciones abejas recolectoras
                     abejasRecolectoras.add(var00);
                     todo.add(var00);
-                    recolectoraAL.add(new abejaRecolectora(10, x, y, true,
-                            var00, false, false, "Recolectora", "", "", 0, 
+                    recolectoraAL.add(new abejaRecolectora(10, ejeX, ejeY, true,
+                            var00, false, false, "Recolectora", "", "", 0,
                             var01, var10, var11, this));
                     break;
                 case 3: //Posiciones obstáculos
@@ -95,7 +95,7 @@ public class ProcesosTablero {
                     todo.add(var10);
                     obstaculos.add(var11);
                     todo.add(var11);
-                    muroAL.add(new obstaculo(-1, x, y, false, var00, var01, 
+                    muroAL.add(new obstaculo(-1, ejeX, ejeY, false, var00, var01,
                             var10, var11, this));
                     break;
                 case 4: //Posiciones recursos
@@ -111,7 +111,7 @@ public class ProcesosTablero {
                     recursos.add(var11);
                     recursos11.add(var11);
                     todo.add(var11);
-                    florAL.add(new recurso(10, x, y, false, var00, var01, 
+                    florAL.add(new recurso(10, ejeX, ejeY, false, var00, var01,
                             var10, var11, this));
                     break;
                 case 5: //Posiciones amenazas
@@ -127,7 +127,7 @@ public class ProcesosTablero {
                     amenazas.add(var11);
                     amenazas11.add(var11);
                     todo.add(var11);
-                    humoAL.add(new amenaza(10, x, y, false, var00, var01, 
+                    humoAL.add(new amenaza(10, ejeX, ejeY, false, var00, var01,
                             var10, var11, this));
                     break;
             }
@@ -164,14 +164,13 @@ public class ProcesosTablero {
     public void continuar() {
         //Llama a los algoritmos de movimiento de las abejas y llama a imprimir
         //los recursos, amenazas y abejas con sus posiciones actualizadas
-        algoritmoMovimientoDefensora(true);
-        algoritmoMovimientoRecolectora(false);
+        algoritmoMovimientoDefensora();
+        algoritmoMovimientoRecolectora();
         imprimir();
     }
 
     public void imprimir() {
         //LLama a imprimir amenazas y recursos en el tiempo
-        System.out.println("******VECES*******: " + veces);
         ponerRecursos(veces);
         ponerAmenazas(veces);
         veces++;
@@ -209,8 +208,7 @@ public class ProcesosTablero {
                                 contador11++;
                             }
                         }
-                    } else if (florAL.get(k).getVida() <= 0 && florAL.get(k).getVida() > -10) {
-                        System.out.println("***Borrar Flor***");
+                    } else if (florAL.get(k).getVida() <= 0 && florAL.get(k).getVida() > -2600) {
                         if (posicion.equals(florAL.get(k).getPosicion())) {
                             jLNuevo.setIcon(null);
                         } else if (posicion.equals(florAL.get(k).getPosicion01())) {
@@ -221,7 +219,7 @@ public class ProcesosTablero {
                             jLNuevo.setIcon(null);
                         }
                         florAL.get(k).setVida(florAL.get(k).getVida() - 1);
-                    } else if (florAL.get(k).getVida() == -10) {
+                    } else if (florAL.get(k).getVida() == -2600) {
                         if (posicion.equals(florAL.get(k).getPosicion())) {
                             jLNuevo.setIcon(null);
                         } else if (posicion.equals(florAL.get(k).getPosicion01())) {
@@ -272,24 +270,24 @@ public class ProcesosTablero {
                         }
                     } else if (humoAL.get(k).getVida() <= 0 && humoAL.get(k).getVida() > -2600) {
                         if (posicion.equals(humoAL.get(k).getPosicion())) {
-                                jLNuevo.setIcon(null);
+                            jLNuevo.setIcon(null);
                         } else if (posicion.equals(humoAL.get(k).getPosicion01())) {
-                                jLNuevo.setIcon(null);
+                            jLNuevo.setIcon(null);
                         } else if (posicion.equals(humoAL.get(k).getPosicion10())) {
-                                jLNuevo.setIcon(null);
+                            jLNuevo.setIcon(null);
                         } else if (posicion.equals(humoAL.get(k).getPosicion11())) {
-                                jLNuevo.setIcon(null);
+                            jLNuevo.setIcon(null);
                         }
                         humoAL.get(k).setVida(humoAL.get(k).getVida() - 1);
-                    }else if (humoAL.get(k).getVida() == -2600) {
+                    } else if (humoAL.get(k).getVida() == -2600) {
                         if (posicion.equals(humoAL.get(k).getPosicion())) {
-                                jLNuevo.setIcon(null);
+                            jLNuevo.setIcon(null);
                         } else if (posicion.equals(humoAL.get(k).getPosicion01())) {
-                                jLNuevo.setIcon(null);
+                            jLNuevo.setIcon(null);
                         } else if (posicion.equals(humoAL.get(k).getPosicion10())) {
-                                jLNuevo.setIcon(null);
+                            jLNuevo.setIcon(null);
                         } else if (posicion.equals(humoAL.get(k).getPosicion11())) {
-                                jLNuevo.setIcon(null);
+                            jLNuevo.setIcon(null);
                         }
                         humoAL.get(k).setVida(10);
                     }
@@ -298,36 +296,36 @@ public class ProcesosTablero {
         }
     }
 
-    public void algoritmoMovimientoDefensora(boolean tipo) {
+    public void algoritmoMovimientoDefensora() {
         //Algoritmo de movimiento
         abejaDefensora abeja;
         for (int i = 0; i < defensoraAL.size(); i++) {
             abeja = defensoraAL.get(i);
-            x = abeja.getX();
-            y = abeja.getY();
-            JLabel jLNuevo = MatrizLabels[x][y];
+            ejeX = abeja.getX();
+            ejeY = abeja.getY();
+            JLabel jLNuevo = MatrizLabels[ejeX][ejeY];
             jLNuevo.setIcon(null);
             abeja.algoritmoMovimiento();
-            x = abeja.getX();
-            y = abeja.getY();
-            jLNuevo = MatrizLabels[x][y];
+            ejeX = abeja.getX();
+            ejeY = abeja.getY();
+            jLNuevo = MatrizLabels[ejeX][ejeY];
             jLNuevo.setIcon(iconDefensora);
         }
     }
 
-    public void algoritmoMovimientoRecolectora(boolean tipo) {
+    public void algoritmoMovimientoRecolectora() {
         //Algoritmo de movimiento
         abejaRecolectora abeja;
         for (int i = 0; i < recolectoraAL.size(); i++) {
             abeja = recolectoraAL.get(i);
-            x = abeja.getX();
-            y = abeja.getY();
-            JLabel jLNuevo = MatrizLabels[x][y];
+            ejeX = abeja.getX();
+            ejeY = abeja.getY();
+            JLabel jLNuevo = MatrizLabels[ejeX][ejeY];
             jLNuevo.setIcon(null);
             abeja.algoritmoMovimiento();
-            x = abeja.getX();
-            y = abeja.getY();
-            jLNuevo = MatrizLabels[x][y];
+            ejeX = abeja.getX();
+            ejeY = abeja.getY();
+            jLNuevo = MatrizLabels[ejeX][ejeY];
             jLNuevo.setIcon(iconRecolectora);
         }
     }
@@ -383,13 +381,10 @@ public class ProcesosTablero {
         //Devuelve un recurso
         recurso polen = null;
         String posicionRecurso = (xP) + "," + (yP);
-        System.out.println("obtenerRecurso");
-        System.out.println(posicionRecurso);
         if (MatrizLabels[xP][yP].getIcon() == flor00
                 || MatrizLabels[xP][yP].getIcon() == flor01
                 || MatrizLabels[xP][yP].getIcon() == flor10
                 || MatrizLabels[xP][yP].getIcon() == flor11) {
-            System.out.println("Es recurso");
             if (recursos01.contains(posicionRecurso)) {
                 posicionRecurso = (xP) + "," + (yP - 1);
             } else if (recursos10.contains(posicionRecurso)) {
@@ -411,12 +406,10 @@ public class ProcesosTablero {
         //Devuelve una amenaza
         amenaza humo = null;
         String posicionAmenaza = (xP) + "," + (yP);
-        System.out.println("obtenerAmenaza");
         if (MatrizLabels[xP][yP].getIcon() == humo00
                 || MatrizLabels[xP][yP].getIcon() == humo01
                 || MatrizLabels[xP][yP].getIcon() == humo10
                 || MatrizLabels[xP][yP].getIcon() == humo11) {
-            System.out.println("Es amenaza");
             if (amenazas01.contains(posicionAmenaza)) {
                 posicionAmenaza = (xP) + "," + (yP - 1);
             } else if (amenazas10.contains(posicionAmenaza)) {
@@ -476,8 +469,8 @@ public class ProcesosTablero {
     int TableroY;//La altura exacta del panel = 845;
     int TamX; //La anchura de los labels de acuerdo al panel
     int TamY; //La altura de los labels de acuerdo al panel
-    int x = 0; //Valor en el ejeX
-    int y = 0; //Valor en el ejeY
+    int ejeX = 0; //Valor en el ejeX
+    int ejeY = 0; //Valor en el ejeY
     int veces = 0; //Veces en las que se han impreso los recursos y amenazas
     String posicion = ""; //Posicion de un objeto
 
