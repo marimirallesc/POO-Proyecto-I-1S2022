@@ -44,7 +44,7 @@ public class Campo extends javax.swing.JFrame {
             .addGap(0, 820, Short.MAX_VALUE)
         );
 
-        jPanel1.setBackground(new java.awt.Color(102, 204, 255));
+        jPanel1.setBackground(new java.awt.Color(255, 204, 0));
 
         continuar.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         continuar.setText("Continuar");

@@ -15,9 +15,11 @@ public class abeja extends serVivo {
     private int huidas = 0;
 
     public abeja(int vida, int x, int y, boolean movimiento, String posicion,
-            boolean polen, boolean amenaza, String amenazaXY, String recursoXY,
-            int huidas, ProcesosTablero tablero) {
-        super(vida, x, y, movimiento, posicion, tablero);
+            boolean polen, boolean amenaza, String recursoXY, String amenazaXY,
+            int huidas, String posicion01, String posicion10, String posicion11,
+            ProcesosTablero tablero) {
+        super(vida, x, y, movimiento, posicion, posicion01, posicion10,
+                posicion11, tablero);
         this.polen = polen;
         this.amenaza = amenaza;
         this.amenazaXY = amenazaXY;
@@ -57,19 +59,416 @@ public class abeja extends serVivo {
         this.recursoXY = recursoXY;
     }
 
-    public void atacar(serVivo enemigo) {
-        if (this.getVida() > 0) {
-            enemigo.recibirAtaque();
+    public int getHuidas() {
+        return huidas;
+    }
+
+    public void setHuidas(int huidas) {
+        this.huidas = huidas;
+    }
+
+    public void recolectarPolen(recurso flor) {
+        if (flor.getVida() > 0) {
+            System.out.println("Polen");
+            this.setPolen(true);
+            flor.recibirAtaque();
+        } else {
+            setPolen(false);
+            setRecursoXY("");
         }
     }
 
-    public void recolectarPolen(serVivo recurso) {
-        try {
-            recurso.recibirAtaque();
-            this.setPolen(true);
-            this.setRecursoXY(recurso.getPosicion());
-        } catch (NullPointerException e) {
+    public void avanzarVacio() {
+        if (getX() > getY()) {
+            if (tablero.isEmpty((getX() - 1), (getY()))) {
+                setX(getX() - 1);
+            } else if (tablero.isEmpty((getX()), (getY() - 1))) {
+                setY(getY() - 1);
+            } else if (tablero.isEmpty((getX()), (getY() + 1))) {
+                setY(getY() + 1);
+            } else if (tablero.isEmpty((getX() + 1), (getY()))) {
+                setX(getX() + 1);
+            }
+        } else {
+            if (tablero.isEmpty((getX()), (getY() - 1))) {
+                setY(getY() - 1);
+            } else if (tablero.isEmpty((getX() - 1), (getY()))) {
+                setX(getX() - 1);
+            } else if (tablero.isEmpty((getX() + 1), (getY()))) {
+                setX(getX() + 1);
+            } else if (tablero.isEmpty((getX()), (getY() + 1))) {
+                setY(getY() + 1);
+            }
         }
     }
-    
+
+    public void toColmena() {
+        if (getX() != 0 && getY() != 0) {
+            avanzarVacio();
+        } else if (getX() != 0 && getY() == 0) {
+            if (getX() == 1) {
+                System.out.println("Colmena");
+                setPolen(false);
+                setAmenazaXY("");
+                setRecursoXY("");
+            } else {
+                setX(getX() - 1);
+            }
+        } else if (getY() != 0 && getX() == 0) {
+            if (getY() == 1) {
+                System.out.println("Colmena");
+                setPolen(false);
+                setAmenazaXY("");
+                setRecursoXY("");
+            } else {
+                setY(getY() - 1);
+            }
+        }
+    }
+
+    public void ifAmenaza(String Eje, String Direccion) {
+        if ((Eje == "X") && (Direccion == "UP")) {
+            if (getX() > 0) {
+                if (tablero.isEmpty((getX() - 1), (getY()))) {
+                    setX(getX() - 1);
+                } else if ((getY() < (tablero.size - 1)) && (tablero.isEmpty((getX()), (getY() + 1)))) {
+                    setY(getY() + 1);
+                } else if ((getY() > 0) && (tablero.isEmpty((getX()), (getY() - 1)))) {
+                    setY(getY() - 1);
+                }
+            } else if (getY() < (tablero.size - 1)) {
+                if (tablero.isEmpty((getX()), (getY() + 1))) {
+                    setY(getY() + 1);
+                }
+            } else {
+                if (tablero.isEmpty((getX()), (getY() - 1))) {
+                    setY(getY() - 1);
+                }
+            }
+        }
+        if ((Eje == "X") && (Direccion == "Down")) {
+            if (getX() < (tablero.size - 1)) {
+                if (tablero.isEmpty((getX() + 1), (getY()))) {
+                    setX(getX() + 1);
+                } else if ((getY() < (tablero.size - 1)) && (tablero.isEmpty((getX()), (getY() + 1)))) {
+                    setY(getY() + 1);
+                } else if ((getY() > 0) && (tablero.isEmpty((getX()), (getY() - 1)))) {
+                    setY(getY() - 1);
+                }
+            } else if (getY() < (tablero.size - 1)) {
+                if (tablero.isEmpty((getX()), (getY() + 1))) {
+                    setY(getY() + 1);
+                }
+            } else {
+                if (tablero.isEmpty((getX()), (getY() - 1))) {
+                    setY(getY() - 1);
+                }
+            }
+        }
+        if ((Eje == "Y") && (Direccion == "UP")) {
+            if (getY() > 0) {
+                if (tablero.isEmpty((getX()), (getY() - 1))) {
+                    setY(getY() - 1);
+                } else if ((getX() < (tablero.size - 1)) && (tablero.isEmpty((getX() + 1), (getY())))) {
+                    setX(getX() + 1);
+                } else if ((getX() > 0) && (tablero.isEmpty((getX() - 1), (getY())))) {
+                    setX(getX() - 1);
+                }
+            } else if (getX() < (tablero.size - 1)) {
+                if (tablero.isEmpty((getX() + 1), (getY()))) {
+                    setX(getX() + 1);
+                }
+            } else {
+                if (tablero.isEmpty((getX() - 1), (getY()))) {
+                    setX(getX() - 1);
+                }
+            }
+        }
+        if ((Eje == "Y") && (Direccion == "Down")) {
+            if (getY() < (tablero.size - 1)) {
+                if (tablero.isEmpty((getX()), (getY() + 1))) {
+                    setY(getY() + 1);
+                } else if ((getX() < (tablero.size - 1)) && (tablero.isEmpty((getX() + 1), (getY())))) {
+                    setX(getX() + 1);
+                } else if ((getX() > 0) && (tablero.isEmpty((getX() - 1), (getY())))) {
+                    setX(getX() - 1);
+                }
+            } else if (getX() < (tablero.size - 1)) {
+                if (tablero.isEmpty((getX() + 1), (getY()))) {
+                    setX(getX() + 1);
+                }
+            } else {
+                if (tablero.isEmpty((getX() - 1), (getY()))) {
+                    setX(getX() - 1);
+                }
+            }
+        }
+    }
+
+    public void moverAleatorio() {
+        if (tablero.random(0, 10) % 2 == 0) {
+            if (tablero.random(0, 10) % 2 == 0) {
+                if (getX() < (tablero.size - 1)) {
+                    if (tablero.isRecurso((getX() + 1), (getY()))) {
+                        setRecursoXY((getX() + 1) + "," + (getY()));
+                        recurso polen = tablero.obtenerRecurso((getX() + 1), (getY()));
+                        if (polen != null) {
+                            recolectarPolen(polen);
+                        }
+                    } else if (tablero.isAmenaza((getX() + 1), (getY()))) {
+                        System.out.println("Amenaza");
+                        setHuidas(10);
+                        setAmenazaXY((getX() + 1) + "," + (getY()));
+                        setAmenaza(true);
+                        ifAmenaza("X", "UP");
+                    } else if (tablero.isObstaculo((getX() + 1), (getY()))) {
+                        if (getX() > 0) {
+                            setX(getX() - 1);
+                        } else if (getY() < (tablero.size - 1)) {
+                            setY(getY() + 1);
+                        } else {
+                            setY(getY() - 1);
+                        }
+                    } else if (tablero.isAbeja((getX() + 1), (getY()))) {
+                        abeja otra = tablero.obtenerAbeja((getX() + 1), (getY()));
+                        if (otra.isPolen()) {
+                            System.out.println("AbejaPolen");
+                            setPolen(true);
+                            setRecursoXY(otra.getRecursoXY());
+                        }
+                        if (otra.isAmenaza()) {
+                            System.out.println("AbejaAmenaza");
+                            setHuidas(10);
+                            setAmenaza(true);
+                            setAmenazaXY(otra.getAmenazaXY());
+                        }
+                    } else if (tablero.isEmpty((getX() + 1), (getY()))) {
+                        setX(getX() + 1);
+                    }
+                }
+            } else {
+                if (getX() > 0) {
+                    if (tablero.isRecurso((getX() - 1), (getY()))) {
+                        setRecursoXY((getX() - 1) + "," + (getY()));
+                        recurso polen = tablero.obtenerRecurso((getX() + 1), (getY()));
+                        if (polen != null) {
+                            recolectarPolen(polen);
+                        }
+                    } else if (tablero.isAmenaza((getX() - 1), (getY()))) {
+                        setAmenazaXY((getX() - 1) + "," + (getY()));
+                        System.out.println("Amenaza");
+                        setHuidas(10);
+                        setAmenaza(true);
+                        ifAmenaza("X", "DOWN");
+                    } else if (tablero.isObstaculo((getX() - 1), (getY()))) {
+                        if (getX() < (tablero.size - 1)) {
+                            setX(getX() + 1);
+                        } else if (getY() < (tablero.size - 1)) {
+                            setY(getY() + 1);
+                        } else {
+                            setY(getY() - 1);
+                        }
+                    } else if (tablero.isAbeja((getX() - 1), (getY()))) {
+                        abeja otra = tablero.obtenerAbeja((getX() - 1), (getY()));
+                        if (otra.isPolen()) {
+                            System.out.println("AbejaPolen");
+                            setPolen(true);
+                            setRecursoXY(otra.getRecursoXY());
+                        }
+                        if (otra.isAmenaza()) {
+                            System.out.println("AbejaAmenaza");
+                            setHuidas(10);
+                            setAmenaza(true);
+                            setAmenazaXY(otra.getAmenazaXY());
+                        }
+                    } else if (tablero.isEmpty((getX() - 1), (getY()))) {
+                        setX(getX() - 1);
+                    }
+                }
+            }
+        } else {
+            if (tablero.random(0, 10) % 2 == 0) {
+                if (getY() < (tablero.size - 1)) {
+                    if (tablero.isRecurso((getX()), (getY() + 1))) {
+                        setRecursoXY((getX()) + "," + (getY() + 1));
+                        recurso polen = tablero.obtenerRecurso((getX()), (getY() + 1));
+                        if (polen != null) {
+                            recolectarPolen(polen);
+                        }
+                    } else if (tablero.isAmenaza((getX()), (getY() + 1))) {
+                        System.out.println("Amenaza");
+                        setHuidas(10);
+                        setAmenazaXY((getX()) + "," + (getY() + 1));
+                        setAmenaza(true);
+                        ifAmenaza("Y", "UP");
+                    } else if (tablero.isObstaculo((getX()), (getY() + 1))) {
+                        if (getY() > 0) {
+                            setY(getY() - 1);
+                        } else if (getX() < (tablero.size - 1)) {
+                            setX(getX() + 1);
+                        } else {
+                            setX(getX() - 1);
+                        }
+                    } else if (tablero.isAbeja((getX()), (getY() + 1))) {
+                        abeja otra = tablero.obtenerAbeja((getX()), (getY() + 1));
+                        if (otra.isPolen()) {
+                            System.out.println("AbejaPolen");
+                            setPolen(true);
+                            setRecursoXY(otra.getRecursoXY());
+                        }
+                        if (otra.isAmenaza()) {
+                            System.out.println("AbejaAmenaza");
+                            setHuidas(10);
+                            setAmenaza(true);
+                            setAmenazaXY(otra.getAmenazaXY());
+                        }
+                    } else if (tablero.isEmpty((getX()), (getY() + 1))) {
+                        setY(getY() + 1);
+                    }
+                }
+            } else {
+                if (getY() > 0) {
+                    if (tablero.isRecurso((getX()), (getY() - 1))) {
+                        setRecursoXY((getX()) + "," + (getY() + 1));
+                        recurso polen = tablero.obtenerRecurso((getX()), (getY() - 1));
+                        if (polen != null) {
+                            recolectarPolen(polen);
+                        }
+                    } else if (tablero.isAmenaza((getX()), (getY() - 1))) {
+                        System.out.println("Amenaza");
+                        setHuidas(10);
+                        setAmenazaXY((getX()) + "," + (getY() - 1));
+                        setAmenaza(true);
+                        ifAmenaza("Y", "DOWN");
+                    } //Fin is Treat
+                    else if (tablero.isObstaculo((getX()), (getY() - 1))) {
+                        if (getY() < (tablero.size - 1)) {
+                            setY(getY() + 1);
+                        } else if (getX() < (tablero.size - 1)) {
+                            setX(getX() + 1);
+                        } else {
+                            setX(getX() - 1);
+                        }
+                    } else if (tablero.isAbeja((getX()), (getY() - 1))) {
+                        abeja otra = tablero.obtenerAbeja((getX()), (getY() - 1));
+                        if (otra.isPolen()) {
+                            System.out.println("AbejaPolen");
+                            setPolen(true);
+                            setRecursoXY(otra.getRecursoXY());
+                        }
+                        if (otra.isAmenaza()) {
+                            System.out.println("AbejaAmenaza");
+                            setHuidas(10);
+                            setAmenaza(true);
+                            setAmenazaXY(otra.getAmenazaXY());
+                        }
+                    } else if (tablero.isEmpty((getX()), (getY() - 1))) {
+                        setY(getY() - 1);
+                    }
+                }
+            }
+        }
+    }
+
+    public void moveTo(String punto) {
+        String[] puntos = punto.split(",");
+        int puntoX = parseInt(puntos[0]);
+        int puntoY = parseInt(puntos[1]);
+        if (puntoX == getX()) {
+            if (Math.abs(puntoY - getY()) == 1) {
+                if (punto.equals(recursoXY)) {
+                    String[] recursoPunto = recursoXY.split(",");
+                    int recursoX = parseInt(recursoPunto[0]);
+                    int recursoY = parseInt(recursoPunto[1]);
+                    recurso polen = tablero.obtenerRecurso(recursoX, recursoY);
+                    if (polen != null) {
+                        recolectarPolen(polen);
+                    }
+                }
+                if (tablero.isEmpty(puntoX, puntoY)) {
+                    System.out.println("Vacio");
+                    setAmenaza(false);
+                    setAmenazaXY("");
+                    setPolen(false);
+                    setRecursoXY("");
+                }
+            }
+        } else if (puntoY == getY()) {
+            if (Math.abs(puntoX - getX()) == 1) {
+                if (punto.equals(recursoXY)) {
+                    String[] recursoPunto = recursoXY.split(",");
+                    int recursoX = parseInt(recursoPunto[0]);
+                    int recursoY = parseInt(recursoPunto[1]);
+                    recurso polen = tablero.obtenerRecurso(recursoX, recursoY);
+                    if (polen != null) {
+                        recolectarPolen(polen);
+                    }
+                }
+                if (tablero.isEmpty(puntoX, puntoY)) {
+                    System.out.println("Vacio");
+                    setAmenaza(false);
+                    setAmenazaXY("");
+                    setPolen(false);
+                    setRecursoXY("");
+                }
+            }
+        } else {
+            if (getX() > puntoX) {
+                if (tablero.isEmpty((getX() - 1), (getY()))) {
+                    setX(getX() - 1);
+                } else if (getY() > puntoY) {
+                    if (tablero.isEmpty((getX()), (getY() - 1))) {
+                        setY(getY() - 1);
+                    }
+                } else if (tablero.isEmpty((getX()), (getY() + 1))) {
+                    setY(getY() + 1);
+                }
+            } else if (tablero.isEmpty((getX() + 1), (getY()))) {
+                setX(getX() + 1);
+            } else if (getY() > puntoY) {
+                if (tablero.isEmpty((getX()), (getY() - 1))) {
+                    setY(getY() - 1);
+                }
+            } else if (tablero.isEmpty((getX()), (getY() + 1))) {
+                setY(getY() + 1);
+            }
+        }
+    }
+
+    public void moveAway(String punto) {
+        String[] puntos = punto.split(",");
+        int puntoX = parseInt(puntos[0]);
+        int puntoY = parseInt(puntos[1]);
+        System.out.println("Huyendo " + punto);
+        System.out.println(getHuidas());
+        if (getHuidas() != 0) {
+            if (getX() > puntoX) {
+                if (getX() < (tablero.size - 1) && tablero.isEmpty((getX() + 1), (getY()))) {
+                    setX(getX() + 1);
+                } else if (getY() > puntoY) {
+                    if (getY() < (tablero.size - 1) && tablero.isEmpty((getX()), (getY() + 1))) {
+                        setY(getY() + 1);
+                    } else if (tablero.isEmpty((getX()), (getY() - 1))) {
+                        setY(getY() - 1);
+                    }
+                }
+            } else if (getX() > 0 && tablero.isEmpty((getX() - 1), (getY()))) {
+                setX(getX() - 1);
+            } else if (getY() < puntoY) {
+                if (getY() > 0 && tablero.isEmpty((getX()), (getY() - 1))) {
+                    setY(getY() - 1);
+                } else if (tablero.isEmpty((getX()), (getY() + 1))) {
+                    setY(getY() + 1);
+                }
+            } else if (getY() < (tablero.size - 1) && tablero.isEmpty((getX()), (getY() + 1))) {
+                setY(getY() + 1);
+            }
+            setHuidas(getHuidas() - 1);
+        } else {
+            System.out.println("Libre de amenaza");
+            setHuidas(0);
+            setAmenaza(false);
+            setAmenazaXY("");
+        }
+    }
 }
