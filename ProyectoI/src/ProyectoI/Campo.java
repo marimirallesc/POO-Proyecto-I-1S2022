@@ -14,10 +14,6 @@ public class Campo extends javax.swing.JFrame {
         tablero = new ProcesosTablero(panel, this);
     }
 
-    public void udpate() {
-
-    }
-
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

@@ -69,7 +69,6 @@ public class abeja extends serVivo {
 
     public void recolectarPolen(recurso flor) {
         if (flor.getVida() > 0) {
-            System.out.println("Polen");
             this.setPolen(true);
             flor.recibirAtaque();
         } else {
@@ -107,7 +106,6 @@ public class abeja extends serVivo {
             avanzarVacio();
         } else if (getX() != 0 && getY() == 0) {
             if (getX() == 1) {
-                System.out.println("Colmena");
                 setPolen(false);
                 setAmenazaXY("");
                 setRecursoXY("");
@@ -116,7 +114,6 @@ public class abeja extends serVivo {
             }
         } else if (getY() != 0 && getX() == 0) {
             if (getY() == 1) {
-                System.out.println("Colmena");
                 setPolen(false);
                 setAmenazaXY("");
                 setRecursoXY("");
@@ -216,7 +213,6 @@ public class abeja extends serVivo {
                             recolectarPolen(polen);
                         }
                     } else if (tablero.isAmenaza((getX() + 1), (getY()))) {
-                        System.out.println("Amenaza");
                         setHuidas(10);
                         setAmenazaXY((getX() + 1) + "," + (getY()));
                         setAmenaza(true);
@@ -232,12 +228,10 @@ public class abeja extends serVivo {
                     } else if (tablero.isAbeja((getX() + 1), (getY()))) {
                         abeja otra = tablero.obtenerAbeja((getX() + 1), (getY()));
                         if (otra.isPolen()) {
-                            System.out.println("AbejaPolen");
                             setPolen(true);
                             setRecursoXY(otra.getRecursoXY());
                         }
                         if (otra.isAmenaza()) {
-                            System.out.println("AbejaAmenaza");
                             setHuidas(10);
                             setAmenaza(true);
                             setAmenazaXY(otra.getAmenazaXY());
@@ -256,7 +250,6 @@ public class abeja extends serVivo {
                         }
                     } else if (tablero.isAmenaza((getX() - 1), (getY()))) {
                         setAmenazaXY((getX() - 1) + "," + (getY()));
-                        System.out.println("Amenaza");
                         setHuidas(10);
                         setAmenaza(true);
                         ifAmenaza("X", "DOWN");
@@ -271,12 +264,10 @@ public class abeja extends serVivo {
                     } else if (tablero.isAbeja((getX() - 1), (getY()))) {
                         abeja otra = tablero.obtenerAbeja((getX() - 1), (getY()));
                         if (otra.isPolen()) {
-                            System.out.println("AbejaPolen");
                             setPolen(true);
                             setRecursoXY(otra.getRecursoXY());
                         }
                         if (otra.isAmenaza()) {
-                            System.out.println("AbejaAmenaza");
                             setHuidas(10);
                             setAmenaza(true);
                             setAmenazaXY(otra.getAmenazaXY());
@@ -296,7 +287,6 @@ public class abeja extends serVivo {
                             recolectarPolen(polen);
                         }
                     } else if (tablero.isAmenaza((getX()), (getY() + 1))) {
-                        System.out.println("Amenaza");
                         setHuidas(10);
                         setAmenazaXY((getX()) + "," + (getY() + 1));
                         setAmenaza(true);
@@ -312,12 +302,10 @@ public class abeja extends serVivo {
                     } else if (tablero.isAbeja((getX()), (getY() + 1))) {
                         abeja otra = tablero.obtenerAbeja((getX()), (getY() + 1));
                         if (otra.isPolen()) {
-                            System.out.println("AbejaPolen");
                             setPolen(true);
                             setRecursoXY(otra.getRecursoXY());
                         }
                         if (otra.isAmenaza()) {
-                            System.out.println("AbejaAmenaza");
                             setHuidas(10);
                             setAmenaza(true);
                             setAmenazaXY(otra.getAmenazaXY());
@@ -335,7 +323,6 @@ public class abeja extends serVivo {
                             recolectarPolen(polen);
                         }
                     } else if (tablero.isAmenaza((getX()), (getY() - 1))) {
-                        System.out.println("Amenaza");
                         setHuidas(10);
                         setAmenazaXY((getX()) + "," + (getY() - 1));
                         setAmenaza(true);
@@ -352,12 +339,10 @@ public class abeja extends serVivo {
                     } else if (tablero.isAbeja((getX()), (getY() - 1))) {
                         abeja otra = tablero.obtenerAbeja((getX()), (getY() - 1));
                         if (otra.isPolen()) {
-                            System.out.println("AbejaPolen");
                             setPolen(true);
                             setRecursoXY(otra.getRecursoXY());
                         }
                         if (otra.isAmenaza()) {
-                            System.out.println("AbejaAmenaza");
                             setHuidas(10);
                             setAmenaza(true);
                             setAmenazaXY(otra.getAmenazaXY());
@@ -386,7 +371,6 @@ public class abeja extends serVivo {
                     }
                 }
                 if (tablero.isEmpty(puntoX, puntoY)) {
-                    System.out.println("Vacio");
                     setAmenaza(false);
                     setAmenazaXY("");
                     setPolen(false);
@@ -405,7 +389,6 @@ public class abeja extends serVivo {
                     }
                 }
                 if (tablero.isEmpty(puntoX, puntoY)) {
-                    System.out.println("Vacio");
                     setAmenaza(false);
                     setAmenazaXY("");
                     setPolen(false);
@@ -439,8 +422,6 @@ public class abeja extends serVivo {
         String[] puntos = punto.split(",");
         int puntoX = parseInt(puntos[0]);
         int puntoY = parseInt(puntos[1]);
-        System.out.println("Huyendo " + punto);
-        System.out.println(getHuidas());
         if (getHuidas() != 0) {
             if (getX() > puntoX) {
                 if (getX() < (tablero.size - 1) && tablero.isEmpty((getX() + 1), (getY()))) {
@@ -465,7 +446,6 @@ public class abeja extends serVivo {
             }
             setHuidas(getHuidas() - 1);
         } else {
-            System.out.println("Libre de amenaza");
             setHuidas(0);
             setAmenaza(false);
             setAmenazaXY("");

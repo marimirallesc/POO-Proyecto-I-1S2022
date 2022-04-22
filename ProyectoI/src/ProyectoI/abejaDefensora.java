@@ -28,7 +28,6 @@ public class abejaDefensora extends abeja {
     }
 
     public void atacar(amenaza humo) {
-        System.out.println("Atacar amenaza");
         if (humo.getVida() > 0) {
             humo.recibirAtaque();
         } else {
@@ -77,7 +76,6 @@ public class abejaDefensora extends abeja {
                     }
                 }
                 if (tablero.isEmpty(puntoX, puntoY)) {
-                    System.out.println("Vacio");
                     setAmenaza(false);
                     setAmenazaXY("");
                     setPolen(false);
@@ -105,7 +103,6 @@ public class abejaDefensora extends abeja {
                     }
                 }
                 if (tablero.isEmpty(puntoX, puntoY)) {
-                    System.out.println("Vacio");
                     setAmenaza(false);
                     setAmenazaXY("");
                     setPolen(false);
@@ -137,21 +134,16 @@ public class abejaDefensora extends abeja {
 
     public void algoritmoMovimiento() {//Algoritmo de movimiento
         if (isPolen()) {
-            System.out.println("move2Colmena");
             toColmena();
         } else if (getAmenazaXY() != "") {
             if (getTipo() == "Defensora") {
-                System.out.println("moveToAmenaza");
                 moveTo(getAmenazaXY());
             } else {
-                System.out.println("moveAwayAmenaza");
                 moveAway(getAmenazaXY());
             }
         } else if (getRecursoXY() != "") {
-            System.out.println("moveToRecurso");
             moveTo(getRecursoXY());
         } else {
-            System.out.println("moverAleatorio");
             moverAleatorio();
         }
     }
