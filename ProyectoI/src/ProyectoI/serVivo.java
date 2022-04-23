@@ -30,17 +30,6 @@ public class serVivo {
         this.tablero = tablero;
     }
 
-    public void recibirAtaque() {
-        this.vida--;
-        if (vida <= 0) {
-            this.morir();
-        }
-    }
-
-    public void morir() {
-        setVida(0);
-    }
-
     public int getY() {
         return y;
     }
@@ -113,4 +102,14 @@ public class serVivo {
         this.posicion11 = posicion11;
     }
 
+    public void recibirAtaque() {
+        this.vida--;
+        if (vida <= 0) {
+            this.morir();
+        }
+    }
+
+    public void morir() {
+        setVida(0);
+    }
 }
